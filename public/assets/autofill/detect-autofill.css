@@ -1,0 +1,27 @@
+/* input,
+select,
+textarea, */
+.sim
+ {
+	transition: background-color 50000s, color 50000s, filter 50000s;
+	}
+
+
+/* input,
+select,
+textarea, */
+.sim :-webkit-autofill {
+	animation-duration: 50000s;
+	animation-name: onautofillstart;
+}
+
+/* input,
+select,
+textarea, */
+.sim :not(:-webkit-autofill) {
+	animation-duration: 50000s;
+	animation-name: onautofillcancel;
+}
+
+@keyframes onautofillstart { from {/**/}  to {/**/}}
+@keyframes onautofillcancel { from {/**/}  to {/**/}}
