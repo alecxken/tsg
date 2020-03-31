@@ -67,6 +67,7 @@
                   @if($user->status == 'Approve')
                    <a href="{{url('data-details/'.$user->ref_token)}}" class="label label-success">Detail</a>
                   @else
+              <button class="label label-default  label-sm  open-modal" value="{{$user->ref_token}}">Update Status</button>
                   <a href="{{url('data-view/'.$user->ref_token)}}" class="label label-warning">Action</a>
                    <a href="{{url('data-edit/'.$user->ref_token)}}" class="label label-info">Edit</a>
                   <!--   <a href="{{url('data-drop/'.$user->ref_token)}}" class="label label-warning">Drop</a> -->
@@ -89,9 +90,26 @@
 </div>
     </div>
 
+@include('payments.stage1')
     <script type="text/javascript">
 
-  
+   
+   $(document).ready(function(){
+
+    var url = "payment-actions";
+
+    $('.open-modal').click(function(){
+        var task_id = $(this).val();
+        $.get(url + '/' + task_id, function (data) {
+            //success data
+            console.log(data);
+            $('#taskid').val(data.ref_token);
+            $('#inputter').val(data.reviewer);
+         
+            $('#myModal').modal('show');
+        }) 
+    });
+  });
      $(document).ready(function() {
 var table = $('#report-table').DataTable(
     {

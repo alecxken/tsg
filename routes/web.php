@@ -23,10 +23,20 @@ Route::get('/tsg-data', function () {
     return view('data.create');
 });
 
+Route::get('/tsg-pdf', function () {
+    return view('data.pdfnow');
+});
 
 Route::get('/dbset', function () {
 
-   DB::statement("ALTER TABLE `data_entries` ADD `delivery_status` VARCHAR(23) NULL DEFAULT NULL AFTER `status`;");
+	 DB::statement("ALTER TABLE `users` ADD `signature` VARCHAR(243) NULL DEFAULT NULL AFTER `role`;");
+	 // DB::statement("ALTER TABLE `invoices` ADD `pay_inputter` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
+	 // DB::statement("ALTER TABLE `invoices` ADD `pay_time` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
+	 // DB::statement("ALTER TABLE `invoices` ADD `auth_inputter` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
+	 // DB::statement("ALTER TABLE `invoices` ADD `auth_time` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
+	 return 'done';
+
+   // DB::statement("ALTER TABLE `data_entries` ADD `proof_delivery` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
    // DB::statement("ALTER TABLE `data_entries` ADD `comments` VARCHAR(23) NULL DEFAULT NULL AFTER `status`;");
    // DB::statement("ALTER TABLE `data_entries` ADD `closuredate` VARCHAR(23) NULL DEFAULT NULL AFTER `status`;");
   
@@ -88,6 +98,7 @@ Route::post('/roles_show/{id}','RoleController@show');
 
 Route::get('/profile','HomeController@profile');
 Route::post('/profileupdate','HomeController@profileupdate');
+Route::get('create-chart/{id}','HomeController@indexs');
 //permissions and Roles
 Route::get('/user_index','UserController@index');
 Route::get('/user_create','UserController@create');
@@ -110,13 +121,31 @@ Route::post('/permission_show/{id}','PermissionController@show');
 Route::resource('/permissions', 'PermissionController');
 
 //store s
+
+Route::get('/payments','DataController@payments');
 Route::post('/store_data','DataController@store');
 Route::get('/data-edit/{id}','DataController@editdata');
 Route::get('/data-view/{id}','DataController@viewdata');
 Route::get('/data-capture-view','DataController@indexdata');
 Route::get('/view-pdf/{id}','DataController@pdf');
+Route::get('/view-letter/{id}','DataController@letterpdf');
+Route::get('/tracking-action/{id}','DataController@tracking');
 Route::get('/view-tracker','DataController@trackerview');
 Route::post('/approval_data','DataController@storeapproval');
+Route::post('/sendapproval','DataController@sendapproval');
+Route::post('/invoice-send','DataController@invoicesend');
+Route::get('/tracking-payment/{id}','DataController@invoicepaids');
+Route::post('/invoice-paid','DataController@invoicepaid');
+Route::post('/updatepayment','DataController@invoicepaid');
+Route::post('/updatepayments','DataController@invoicepaidz');
+
+Route::post('/store_invoice','DataController@storeinvoice');
+
+Route::get('/agent-approval/{id}','DataController@viewapproval');
+Route::get('/payment-action/{id}','DataController@payaction');
+Route::get('/payment-actions/{id}','DataController@datadetails');
+Route::get('/invoice-preview/{id}','DataController@viewinvoice');
+Route::get('/view-agent','DataController@viewagent');
 
 
 Route::post('/agent-store','PeopleController@storeagent');

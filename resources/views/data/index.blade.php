@@ -26,6 +26,7 @@
                 <th>Rate</th> 
                 <th>Delivery Agent</th>          
                 <th>Delivery Status</th>
+                <th>Age</th>
                 <th>Status</th>
                 <th>Action</th> 
 
@@ -36,9 +37,8 @@
             @if(!empty($data))
            @foreach ($data ?? '' as $user)
               <tr>
-                @if($user->status == 'Approve')
-                 <td><a href="{{url('calendar-view/'.$user->log_id)}}" class="label label-success">{{$user->ref_token}}</a></td>
-                        
+           
+          <td><a href="{{url('tracking-action/'.$user->ref_token)}}" class="label label-success">{{$user->ref_token}}</a></td>                       
                 <td>{{$user->client_name}}</td>
                 <td>{{$user->inst_date}}</td>
                 <td>{{$user->ben_name}}</td>
@@ -46,23 +46,44 @@
                 <td>{{$user->rate}}</td>
                 <td>{{$user->agent}}</td>
                 <td>{{$user->delivery_status}}</td>
+                <?php
+$now  = \Carbon\Carbon::now();
+$end  = $user->inst_date;
+
+// show difference in days between now and end dates
+$test = $now->diffInDays($end);
+                ?>
+                <td>{{$test}} Days</td>
                 <td>
                   @if($user->status == 'Done')
-                    <label class="label label-warning">Done</label>
-                  @elseif($user->status == 'Complete')
-                     <label class="label label-success">Ok</label>
+                    <label class="label label-warning">{{$user->status}}</label>
+                  @elseif($user->status == 'Invoicing')
+                     <label class="label label-success">{{$user->status}}</label>
+                   @elseif($user->status == 'Agent')
+                     <label class="label label-success">{{$user->status}}</label>
+                   @elseif($user->status == 'Paid')
+                     <label class="label label-success">{{$user->status}}</label>
+                   @elseif($user->status == 'Reimbursed')
+                     <label class="label label-success">{{$user->status}}</label>
                   @else
-                     <label class="label label-info">Pending</label>
+                     <label class="label label-info">{{$user->status}}</label>
                   @endif
                 </td>
                <td>
-                  @if($user->status == 'Done')
-                   <a href="{{url('action-remedy/'.$user->id)}}" class="label label-success">Action</a>
+                
+                  @if($user->status == 'Agent')
+                 <button class="btn btn-sm btn-default  label-sm  open-modal" value="{{$user->ref_token}}">Update Status</button>
+               {{--     <a href="{{url('tracking-action/'.$user->ref_token)}}" class="label label-success">Action Now</a> --}}
+                  @elseif($user->status == 'Invoicing')
+                  
+                  @elseif($user->status == 'Paid')
+
                   @else
-                  <a href="{{url('calendar-review/'.$user->log_id)}}" class="label label-warning">Action</a>
+                  No Action Here
                   @endif
+           
                 </td>
-               @endif
+ 
               </tr>
           @endforeach
           @endif
@@ -78,10 +99,26 @@
    </div>
 </div>
     </div>
-
+@include('payments.trackerinputer')
     <script type="text/javascript">
 
-  
+   
+   $(document).ready(function(){
+
+    var url = "payment-actions";
+
+    $('.open-modal').click(function(){
+        var task_id = $(this).val();
+        $.get(url + '/' + task_id, function (data) {
+            //success data
+            console.log(data);
+            $('#taskid').val(data.ref_token);
+            $('#taskname').val(data.client_name);
+            $('#delivery').val(data.delivery_status);
+            $('#myModal').modal('show');
+        }) 
+    });
+  });
      $(document).ready(function() {
 var table = $('#report-table').DataTable(
     {

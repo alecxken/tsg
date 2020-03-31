@@ -7,7 +7,7 @@
 <div class="box-body">
   
 
-    <div class="col-lg-10 col-lg-offset-1" id="test">
+    <div class="col-lg-11 col-lg-offset-1" id="test">
           <div class="box box-primary">
                 <div class="box-header with-border bg-info">
                       <h3 class="box-title"><i class='fa fa-pencil'></i> Data Capture</h3>
@@ -53,7 +53,7 @@
 
                             <div class="form-group col-md-4">
                                 {{ Form::label('email', 'Beneficiary ID') }}
-                                {{ Form::number('ben_id', '', array('class' => 'form-control input-sm')) }}
+                                {{ Form::text('ben_id', '', array('class' => 'form-control input-sm')) }}
                             </div>
 
                              <div class="form-group col-md-4">
@@ -97,21 +97,36 @@
                             </div>
 
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 {{ Form::label('email', 'Attach Client Instruction') }}
                                 <input type="file" multiple="" name="client_inst[]" class="form-control input-sm" required="">
                            
                             </div>
 
-                             <div class="form-group col-md-4">
+                             <div class="form-group col-md-3">
                                 {{ Form::label('name', 'Attach Payment List') }}
                                 <input type="file" multiple="" name="payment_list[]" class="form-control input-sm">
                               
                             </div>
 
-                             <div class="form-group col-md-4">
-                                {{ Form::label('name', 'Reviewer') }}
+                             <div class="form-group col-md-3">
+                                {{ Form::label('name', 'Inputer Name') }}
                                 {{ Form::text('reviewer',Auth::user()->name, array('class' => 'form-control input-sm','readonly')) }}
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                {{ Form::label('name', 'Inputer Name') }}
+                                 @if(!empty($agent))
+                               <select class="form-control input-sm" name="agent" required="">
+                                  <option value="">Choose Delivery Agent</option>
+                                   @foreach($agent as $c)
+                                     <option value="{{$c->token}}">{{$c->token}} - {{$c->name}}</option>
+                                   @endforeach
+                               </select>
+                                 @else
+                                 <label class="form-control text-danger">No Agent Created<</label>
+                             
+                                @endif
                             </div>
 
                              <div class="form-group col-md-12">

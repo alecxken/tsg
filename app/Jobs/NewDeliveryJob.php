@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Mail;
 use App\Mail\NewDeliveryAlert;
 use App\DataEntry;
+use App\Datacall;
 use App\Client;
 use App\Agent;
 use App\User;
@@ -25,9 +26,9 @@ class NewDeliveryJob implements ShouldQueue
      * @return void
      */
     public $data;
-    public function __construct(DataEntry $data)
+    public function __construct(Datacall $data)
     {
-  $this->data =$data;
+  $this->data = $data;
     }
 
     /**
@@ -46,10 +47,16 @@ class NewDeliveryJob implements ShouldQueue
    //
     $agentname = $agent->name;
     $mail = $agent->email;
+    $deta = DataEntry::all()->where('ref_token',$this->data->ref_token)->first();
    
+    $agent_pdf = $deta->agent_pdf;
+    $ref_token = $deta->ref_token;
 
+     $this->agent_pdf = $agent_pdf;
+      $this->ref_token = $ref_token;
     $this->agentname = $agentname;
+         $path = storage_path('authorizations/'.$this->agent_pdf.'');
     
-    Mail::to($mail)->cc($cc)->send( new NewDeliveryAlert($agentname)); 
+    Mail::to($mail)->cc($cc)->send( new NewDeliveryAlert($agentname,$agent_pdf,$ref_token,$path)); 
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-
+use DataEntry;
 class NewDeliveryAlert extends Mailable
 {
     use Queueable, SerializesModels;
@@ -16,11 +16,17 @@ class NewDeliveryAlert extends Mailable
      *
      * @return void
      */
-      public $agent;
-  
-    public function __construct( $agent)
+      public $agentname;
+      public $agent_pdf;
+    public $ref_token;
+     public $path;
+    public function __construct($agentname, $agent_pdf,$ref_token,$path)
     {
-  $this->agent =$agent;
+  $this->agentname =$agentname;
+  $this->agent_pdf =$agent_pdf;
+   $this->ref_token =$ref_token;
+   $this->path =$path;
+
 
     }
 
@@ -31,6 +37,9 @@ class NewDeliveryAlert extends Mailable
      */
     public function build()
     {
-        return $this->subject('Delivery-Request Alert ')->markdown('emails.alertdelivery');
+         // $path ='C:\inetpub\wwwroot\ecofinal\public\file\Calypso.xlsx';
+         $path = storage_path('authorizations/'.$this->agent_pdf.'');
+        return $this->subject('Delivery-Request Alert '.$this->ref_token.' ')->markdown('emails.alertdelivery')->attach($this->path);
+     //   return $this->subject('Delivery-Request Alert ')->markdown('emails.alertdelivery');
     }
 }

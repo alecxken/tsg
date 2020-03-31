@@ -100,7 +100,7 @@
 
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('email', 'Attach Client Instruction') }}
+                                {{ Form::label('email', ' Client Instruction') }}
                               <!--   <input type="file" multiple="" name="client_inst[]" class="form-control input-sm" required=""> -->
                               <div class="form-control">
                                  @if(!empty($data->client_inst))
@@ -116,7 +116,7 @@
                             </div>
 
                              <div class="form-group col-md-4">
-                                {{ Form::label('name', 'Attach Payment List') }}
+                                {{ Form::label('name', ' Payment List') }}
                              <!--    <input type="file" multiple="" name="payment_list[]" class="form-control input-sm"> -->
                              <div class="form-control">
                                 @if(!empty($data->payment_list))
@@ -133,7 +133,7 @@
                             </div>
 
                              <div class="form-group col-md-4">
-                                {{ Form::label('name', 'Reviewer') }}
+                                {{ Form::label('name', 'Inputer') }}
                                 {{ Form::text('reviewer',$data->reviewer, array('class' => 'form-control input-sm','readonly')) }}
                             </div>
 
@@ -144,7 +144,7 @@
 
                             <div class="row">
 
-                             <div class="form-group col-md-3">
+                             <div class="form-group col-md-4">
                                 {{ Form::label('name', 'Choose Status') }}
                                  <select class="form-control input-sm" name="status" required="">
                                  <option value="">Choose Status</option>
@@ -153,28 +153,9 @@
                                </select>
                             </div>
 
-                             <div class="form-group col-md-3">
-                                {{ Form::label('email', 'Agent Name') }}
-                               
-                                @if(!empty($agent))
-                               <select class="form-control input-sm" name="agent" required="">
-                               
-                               
-                                @foreach($agent as $c)
-                                 <option value="">Choose Delivery Agent</option>
-                                <option value="{{$c->token}}">{{$c->token}} - {{$c->name}}</option>
-                                @endforeach
-                              
-                                
-                               </select>
-                                 @else
-                                 <label class="form-control text-danger">No Agent Created<</label>
-                             
-                                @endif
-                         
-                            </div>
+                          
 
-                             <div class="form-group col-md-6">
+                             <div class="form-group col-md-8">
                                 {{ Form::label('name', 'Comments') }}
                                  {{ Form::textarea('comments', '', array('class' => 'form-control input-sm ','rows'=>'1','placeholder'=>'comments on the status')) }}
                                <!-- ] -->

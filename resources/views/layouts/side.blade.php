@@ -24,12 +24,16 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: none;">
-             <li><a href="{{url('data-capture')}}"><i class="fa fa-pencil"></i> <span>Data Capture</span></a></li>
+                @role('Inputer')
+             <li><a href="{{url('data-capture')}}"><i class="fa fa-pencil"></i> <span>Data Capture</span></a></li>@endrole
       <!--        <li><a href="{{url('data-view')}}"><i class="fa fa-map"></i> <span>Tracking</span></a></li> -->
+      @role('Authorizer')
              <li><a href="{{url('data-capture-view')}}"><i class=" fa fa-file text-orange"></i> Capturer Queue</a></li> 
+             @endrole
          </ul>
         </li> 
         <li><a href="{{url('view-tracker')}}"><i class="fa fa-map"></i> <span>Tracking</span></a></li>
+        @role('Report')
          <li class="treeview">
           <a href="#">
             <i class="fa fa-file"></i> <span>Invoice Module </span>
@@ -38,8 +42,8 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: none;">
+            <li><a href="{{url('payments')}}"><i class=" fa fa-money text-orange"></i> Payment Tracking</a></li> 
             <li><a href="{{url('')}}"><i class=" fa fa-gears text-orange"></i> Report</a></li> 
-        
           </ul>
         </li> 
        
@@ -56,7 +60,9 @@
         
           </ul>
         </li> 
-       
+         <li><a href="{{url('view-agent')}}"><i class="fa fa-user"></i> <span>Agent Reimbursement</span></a></li>
+       @endrole
+        @role('isAdmin')
           <li class="treeview">
           <a href="#">
             <i class="fa fa-user"></i> <span>User Management</span>
@@ -71,6 +77,7 @@
           <li><a href="{{url('agent-create')}}"><i class=" fa fa-gears text-green"></i> Agent Management</a></li> 
           </ul>
         </li>
+         @endrole
 
          
         

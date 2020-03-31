@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trans extends Model
 {
-   protected $table = 'tes';
+   protected $table = 'Trans';
 }

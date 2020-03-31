@@ -165,6 +165,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
         Dirape\Token\TokenServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -231,6 +233,8 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Token'=>\Dirape\Token\Facades\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
 
     ],
 

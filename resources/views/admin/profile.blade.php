@@ -12,9 +12,18 @@
               <!-- /.tab-pane -->
 
               <div class="tab-pane active" id="settings">
-                <form class="form-horizontal" method="post" action="{{url('profileupdate')}}">
-                	@csrf
+        
+                 {!! Form::open(['method'=> 'post','class'=>'form-horizontal','url' => 'profileupdate', 'files' => true ]) !!}
+                	
                 	<input type="hidden" name="id" value="{{Auth::id()}}">
+
+                   <div class="form-group">
+                      {{ Form::label('name', 'username', array('class' => 'col-sm-2 control-label') )}}
+                       <div class="col-sm-10">
+                      {{ Form::text('username', Auth::user()->username, array('class' => 'form-control')) }}
+                    </div>
+                  </div>
+       
                  
                   <div class="form-group">
                     <label for="inputName" class="col-sm-2 control-label">Name</label>
@@ -28,6 +37,18 @@
                       <input type="email" value="{{Auth::user()->email}}" name="email" class="form-control" id="inputEmail" placeholder="Email" >
                     </div>
                   </div>
+
+                     <div class="form-group">
+                      {{ Form::label('name', 'Signature', array('class' => 'col-sm-2 control-label') )}}
+                      
+                      <div class="col-sm-5">
+                      {{ Form::text('signature', Auth::user()->signature, array('class' => 'form-control')) }}
+                    </div>
+                     <div class="col-sm-5">
+                      {{ Form::file('file', Auth::user()->signature, array('class' => 'form-control')) }}
+                    </div>
+                  </div>
+       
               
               
            
@@ -36,7 +57,7 @@
                       <button type="submit" class="btn btn-danger">Submit</button>
                     </div>
                   </div>
-                </form>
+               {!!Form::close()!!}
               </div>
               <!-- /.tab-pane -->
             </div>
