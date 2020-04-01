@@ -253,15 +253,14 @@ public function system()
                 if (!empty($media)) {
                     $destinationPath = storage_path('signatures');
                     $fname = date('Y').'-'.$request->input('username').'.'.$media->getClientOriginalExtension();
-                    $media->move($destinationPath, $fname);
-                 
+                    $media->move($destinationPath, $fname);                
                
                   }
                 
              }
          if(!is_null($fname))
                 {
-                    $data->signature = $fname;
+                    $user->signature = $fname;
                 }
 
               

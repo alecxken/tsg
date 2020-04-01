@@ -3,6 +3,9 @@
 @section('content')
 <?php
 $reports = \App\EssReport::all()->count();
+$new = \App\DataEntry::all()->where('status','New')->count();
+$agent = \App\DataEntry::all()->where('status','Agent')->count();
+$invoice = \App\DataEntry::all()->where('status','invoicing')->count();
 $news = \App\User::all()->count();
 
 
@@ -32,11 +35,11 @@ $news = \App\User::all()->count();
 
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+            <span class="info-box-icon bg-aqua"><i class="">@if(!empty($reports)) {{$reports}} @else  0 @endif</i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">New Data Entries</span>
-              <span class="info-box-number">@if(!empty($reports)) {{$reports}} @else  0 @endif<<small>Entries</small></span>
+              <span class="info-box-text">New </span>
+              <span class="info-box-number"><small>Data Entries</small></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -45,11 +48,12 @@ $news = \App\User::all()->count();
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-green"><i class="fa fa-bank"></i></span>
+            <span class="info-box-icon bg-green"><i >@if(!empty($news)) {{$news}} @else  0 @endif</i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Pending Diliveries </span>
-              <span class="info-box-number">@if(!empty($news)) {{$news}} @else  0 @endif</span>
+              <span class="info-box-text">Pending  </span>
+              <span class="info-box-number"><small>Agent Deliveries</small></span>
+
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -62,11 +66,11 @@ $news = \App\User::all()->count();
 
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-remove"></i></span>
+            <span class="info-box-icon bg-red"><i>@if(!empty($news)) {{$news}} @else  0 @endif</i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Pending Invoices</span>
-              <span class="info-box-number">@if(!empty($cancelled)) {{$cancelled}} @else  0 @endif</span>
+              <span class="info-box-text">Invoices</span>
+              <span class="info-box-number"><small>unpaid</small></span>
             </div>
             <!-- /.info-box-content -->
           </div>

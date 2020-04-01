@@ -45,7 +45,7 @@
                       {{ Form::text('signature', Auth::user()->signature, array('class' => 'form-control')) }}
                     </div>
                      <div class="col-sm-5">
-                      {{ Form::file('file', Auth::user()->signature, array('class' => 'form-control')) }}
+                      {{ Form::file('file',null, array('class' => 'form-control')) }}
                     </div>
                   </div>
        

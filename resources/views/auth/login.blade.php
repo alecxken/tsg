@@ -35,8 +35,10 @@
     <form method="POST" action="{{ route('login') }}">
                         @csrf
      <div class="form-group has-feedback{{ __('E-Mail Address') }}">
-        <input type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="Windows Username">
-
+      <div class="input-group">
+      <input id="username" type="text" placeholder="Windows Username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="email"  required  autofocus><span class="input-group-addon">@ecobank.com</span>
+    </div>
+ 
 
            @if ($errors->has('email'))
         <span class="invalid-feedback" role="alert">

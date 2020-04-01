@@ -1,4 +1,6 @@
-
+@guest
+  <meta http-equiv = "refresh" content = "1; url = {{url('/login')}}" />
+@else
 <!DOCTYPE html>
 <html>
 <head>
@@ -248,3 +250,4 @@ setTimeout(function() {
 
 </body>
 </html>
+@endif

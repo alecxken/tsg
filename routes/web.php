@@ -20,21 +20,26 @@ Route::get('/register', function () {
 
 
 Route::get('/tsg-data', function () {
+
     return view('data.create');
 });
 
 Route::get('/tsg-pdf', function () {
-    return view('data.pdfnow');
+    return view('data.pfd');
 });
 
 Route::get('/dbset', function () {
 
-	 DB::statement("ALTER TABLE `users` ADD `signature` VARCHAR(243) NULL DEFAULT NULL AFTER `role`;");
+  // DB::TABLE('data_entries')->truncate();
+  //   DB::TABLE('invoices')->truncate();
+
+
+	 //DB::statement("ALTER TABLE `users` ADD `signature` VARCHAR(243) NULL DEFAULT NULL AFTER `role`;");
 	 // DB::statement("ALTER TABLE `invoices` ADD `pay_inputter` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
 	 // DB::statement("ALTER TABLE `invoices` ADD `pay_time` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
 	 // DB::statement("ALTER TABLE `invoices` ADD `auth_inputter` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
 	 // DB::statement("ALTER TABLE `invoices` ADD `auth_time` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
-	 return 'done';
+	 return redirect('home')->with('status','Successfully Executed');
 
    // DB::statement("ALTER TABLE `data_entries` ADD `proof_delivery` VARCHAR(243) NULL DEFAULT NULL AFTER `status`;");
    // DB::statement("ALTER TABLE `data_entries` ADD `comments` VARCHAR(23) NULL DEFAULT NULL AFTER `status`;");

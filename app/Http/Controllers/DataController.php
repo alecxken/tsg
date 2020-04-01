@@ -129,7 +129,7 @@ class DataController extends Controller
 
 
                     $this->validate($request, [
-                                      'ref_token' => 'required|unique:data_entries',
+                                      // 'ref_token' => 'required|unique:data_entries',
                                       'amount' => 'required:numeric|lt:1000000000',
                                       'ccy' => 'required',
                                       'ben_name' => 'required',
@@ -211,7 +211,7 @@ class DataController extends Controller
                     $track->stage = 'DataEntry';
                     $track->inputer = Auth::user()->username;
                     $track->inputer_time = \Carbon\Carbon::now();
-                    $track->inputer->status = 'Capture';
+                    $track->inputer_status = 'Capture';
                     $track->save();
 
                      $emailJob = (new ApprovalEmailJob($data))->delay(\Carbon\Carbon::now()->addSeconds(2));        
@@ -237,7 +237,7 @@ class DataController extends Controller
             $numberToWords = new NumberToWords();
             $currencyTransformer = $numberToWords->getCurrencyTransformer('en');
             $words= $currencyTransformer->toWords($data->amount, 'USD'); 
-            $pdf = \PDF::loadView('data.pdf', compact('data','words'));
+            $pdf = \PDF::loadView('data.pdfs', compact('data','words'));
             $pdf->save(storage_path('authorizations/').$filename);        
             return redirect('agent-approval/'.$token)->with('status','Succesfully Captured');
          
@@ -289,6 +289,7 @@ class DataController extends Controller
                 $tracker->save();
 
                 $data = Datacall::all()->where('ref_token',$t->ref_token)->first();
+
                 $emailJob = (new NewDeliveryJob($data))->delay(\Carbon\Carbon::now()->addSeconds(2));        
                 $this->dispatch($emailJob);  
                 return redirect('view-tracker')->with('status','Succesfully Captured');
@@ -443,8 +444,9 @@ class DataController extends Controller
         $currencyTransformer = $numberToWords->getCurrencyTransformer('en');
         $words= $currencyTransformer->toWords(($coms + $deta->amount), 'USD'); 
       //  return $words;
-        $pdf = \PDF::loadView('data.invoice', compact('data','words'));
+        $pdf = \PDF::loadView('data.invoice2', compact('data','words'));
         $pdf->save(storage_path('authorizations/').$filename);
+        
         return redirect('invoice-preview/'.$deta->ref_token)->with('status','Succesfully Captured');
         $emailJob = (new NewInvoiceJob($data))->delay(\Carbon\Carbon::now()->addSeconds(2));        
             $this->dispatch($emailJob);  
