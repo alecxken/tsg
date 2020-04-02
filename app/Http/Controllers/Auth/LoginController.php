@@ -59,7 +59,7 @@ if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                  }
 
       if(empty($user) || empty($password)) return back()->with('danger','Kindly input all credentials');
-       $ldap_host = "10.32.1.18";
+       $ldap_host = "10.44.1.18";
        $ldap = ldap_connect($ldap_host) or die("Could not connect to LDAP server.");
        ldap_set_option($ldap,LDAP_OPT_PROTOCOL_VERSION,3);
       

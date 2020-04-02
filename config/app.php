@@ -167,6 +167,7 @@ return [
         Dirape\Token\TokenServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
+          OwenIt\Auditing\AuditingServiceProvider::class,
         /*
          * Package Service Providers...
          */
