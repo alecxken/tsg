@@ -143,6 +143,10 @@ Route::get('/tracking-payment/{id}','DataController@invoicepaids');
 Route::post('/invoice-paid','DataController@invoicepaid');
 Route::post('/updatepayment','DataController@invoicepaid');
 Route::post('/updatepayments','DataController@invoicepaidz');
+Route::post('/updatepays','DataController@invoicepaidiy');
+
+Route::get('/monitor','DataController@monitor');
+
 
 Route::post('/store_invoice','DataController@storeinvoice');
 
@@ -151,6 +155,7 @@ Route::get('/payment-action/{id}','DataController@payaction');
 Route::get('/payment-actions/{id}','DataController@datadetails');
 Route::get('/invoice-preview/{id}','DataController@viewinvoice');
 Route::get('/view-agent','DataController@viewagent');
+Route::get('image/{filename}', 'HomeController@displayImage')->name('image.displayImage');
 
 
 Route::post('/agent-store','PeopleController@storeagent');

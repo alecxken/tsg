@@ -38,8 +38,8 @@ class NewDeliveryJob implements ShouldQueue
      */
     public function handle()
     {
-    $checker =User::where('name',$this->data->checker)->first();
-    $reviewer =User::where('name',$this->data->reviewer)->first();  
+    $checker =User::where('username',$this->data->checker)->first();
+    $reviewer =User::where('username',$this->data->reviewer)->first();  
     $agent =Agent::where('token',$this->data->agent)->first();  
     $cc =['akendagor@ecobank.com',$checker->email,$reviewer->email,]; 
     

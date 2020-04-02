@@ -100,7 +100,7 @@
     </style>
 </head>
 
-<body>
+<body  style="font-family: \'Tahoma\'; line-height: 95%; text-align: justify;font-size:10pt;">
     <div class="invoice-box">
         <table cellpadding="0" cellspacing="0">
             <tr class="top">
@@ -141,47 +141,131 @@
          
 
       
+          <!--    <tr class="heading">
+                <td colspan="4">
+                   <h3>SUBJECT: <b> CASH DELIVERY REQUEST FOR TO {{$data->loc_delivery}}</b></h3>
+                </td>
+                
+                <td colspan="2">
+                    Check 
+                </td>
+            </tr> -->
             
-            <tr class="details">
+        
+       
+               <tr class="details">
+                <td colspan="6">
+                <h3>SUBJECT: <b> CASH DELIVERY REQUEST  TO  {{strtoupper($data->loc_delivery)}} </b></h3>
+                 <p>You are kindly requested to deliver cash in the total amount of  <b>{{$data->ccy}} {{$data->amount}} ({{$words}})</b>to the following beneficiary on {{$data->delivery_date}}</p>
+                 <p>
+                     <b>{{$data->desc}}</b>
+                 </p>
+
+                 <p>As per Agreement between {{$data->cname}} and Ecobank, we shall reimburse {{$data->agname}} Company Limited with the full amount delivered plus commission.</p>
+                    <p>Find Delivery Details below Your prompt action is highly appreciated.</p>
+                </td>
+                
                
-               <td colspan="6">
-                 <h3>SUBJECT: <u> CASH DELIVERY REQUEST FOR TO {{$data->loc_delivery}}</u></h3>
+            </tr>
+            
+            <tr class="heading">
+                <td>
+                    Service
+                </td>
+                
+                <td>
+                    Details
+                </td>
+            </tr>
+        
+            <tr class="item">
+                <td>
+                    Beneficiary Name 
+                </td>
+                
+                <td>
+                    {{$data->ben_name}}
+                </td>
+            </tr>
+            
+            <tr class="item ">
+                <td>
+                    Passport / ID
+                </td>
+                
+                <td>
+                   {{$data->ben_id}}
+                </td>
+            </tr>
+            
+            <tr class="item ">
+                <td>
+                    Phone No
+                </td>
+                
+                <td>
+                    {{$data->ben_phone}}
+                </td>
+            </tr>
+             <tr class="item last">
+                <td>
+                    Location
+                </td>
+                
+                <td>
+                    {{$data->loc_delivery}}
+                </td>
+            </tr>
+            
+            <tr class="total">
+                <td></td>
+                
+                <td>
+                   {{-- Total: {{$data->disbursed}} --}}
+                </td>
+            </tr>
 
-             
-                      <p>You are kindly requested to deliver cash in the total amount of  <b>{{$data->ccy}} {{$data->amount}} ({{$words}})</b>to the following beneficiary on {{$data->delivery_date}}: Details are as Follows</p>
-                     
-                           <!--  <h5><u>Beneficiary Details</u></h5> -->
-                            <address>
-                                <center>
-                                Beneficiary Name :{{$data->ben_name}}<br>
-                                Passport / ID :{{$data->ben_id}}<br>
-                                Phone No :{{$data->ben_phone}}<br>
-                                Location:{{$data->loc_delivery}}
-                            </center>
-                            </address>
-
-                    <p>As per Agreement between {{$data->cname}} and Ecobank, we shall reimburse {{$data->agname}} Company Limited with the full amount delivered plus commission.</p>
-                    <p>Your prompt action is highly appreciated.</p>
-                    <br>
-                      <b>Yours faithfully</b>
-                      <p>Ecobank South Sudan</p>
-
-                         <table style="width:100%; border: 0px; padding-top: 20px;">
-                            <tr style="border: 0px;">
-                              <th style="border: 0px; padding: 5px;">Captured By </th>
-                              <td style="border: 0px; padding: 5px;"><u>{{\App\User::all()->where('username',$data->reviewer)->first()->email}}</u></td>
-                            </tr>
-                          
-                            <tr style="border: 0px;">
-                              <th style="border: 0px; padding: 5px;">Authorized By</th>
-                              <td style="border: 0px; padding: 5px;"><u>{{$data->checker}}</u></td>
-                            </tr>
-                          </table>
-          
+                <br>
+             <tr class="heading">
+                <td colspan="4">
+                    Authorizations
+                </td>
+                
+                <td colspan="2">
+                    By
+                </td>
+            </tr>
+            
+        
+           
+            <tr class="item last">
+                <td   colspan="2">
+                   Captured By 
+                </td>
+                
+                <td  colspan="4">
+                   <i>{{$data->reviewer}}</i> 
                    
-          
-                   
-               </td>
+                  
+                </td>
+            </tr>
+
+                <tr class="item last">
+                <td  colspan="2">
+                   Authorized By 
+                </td>
+                
+                <td  colspan="4">
+                  <i>{{$data->checker}}</i> 
+                </td>
+            </tr>
+            
+            <tr class="total">
+                <td></td>
+                
+                <td>
+                  Ecobank South Sudan
+                </td>
             </tr>
 
             <tr>

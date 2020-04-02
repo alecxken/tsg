@@ -41,7 +41,7 @@ class ApprovalEmailJob implements ShouldQueue
      foreach ($test as  $value) {
          $email[] = $value->email;
      }
-       $reviewer =User::where('name',$this->data->reviewer)->first();  
+       $reviewer =User::where('username',$this->data->reviewer)->first();  
      $agent =DataEntry::where('ref_token',$this->data->ref_token)->first();  
     Mail::to($email)->cc($reviewer->email)->send( new ApprovalRequestMail($agent)); 
     }

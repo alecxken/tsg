@@ -56,7 +56,7 @@
             </span>
           </a>
           <ul class="treeview-menu" style="display: none;">
-           <!--  <li><a href="{{url('pump_report')}}"><i class=" fa fa-gears text-orange"></i> Pump Report</a></li>  -->
+            <li><a href="{{url('monitor')}}"><i class=" fa fa-gears text-orange"></i> Status Report</a></li> 
         
           </ul>
         </li> 

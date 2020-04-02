@@ -36,7 +36,7 @@
                         @csrf
      <div class="form-group has-feedback{{ __('E-Mail Address') }}">
       <div class="input-group">
-      <input id="username" type="text" placeholder="Windows Username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="email"  required  autofocus><span class="input-group-addon">@ecobank.com</span>
+      <input id="username" type="text" placeholder="Windows Username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username"  required  autofocus><span class="input-group-addon">@ecobank.com</span>
     </div>
  
 

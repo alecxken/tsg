@@ -29,8 +29,9 @@
                                 {{ Form::label('email', 'Client Name') }}
                                <select class="form-control input-sm" name="client_name" required="">
                                 @if(!empty($client))
+                                <option value="">Choose Client</option>
                                 @foreach($client as $c)
-                                 <option value="">Choose Client</option>
+                                 
                                 <option value="{{$c->token}}">{{$c->token}} - {{$c->name}}</option>
                                 @endforeach
                                 @else

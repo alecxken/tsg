@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>A simple, clean, and responsive HTML invoice template</title>
+    <title>{{$data->in}}</title>
     
     <style>
     .invoice-box {
@@ -138,9 +138,9 @@
                             </td>
                             
                             <td>
-                                {{$data->cname}}.<br>
-                                 {{$data->phy_addresss}}<br>
-                                {{$data->email}}
+                                {{$deta->cname}}.<br>
+                                 {{$deta->phy_addresss}}<br>
+                                {{$deta->email}}
                             </td>
                         </tr>
                     </table>
@@ -222,26 +222,20 @@
                 </td>
                 
                 <td>
-                    Amount
+                    By
                 </td>
             </tr>
             
         
-            <?php
-                $inputer = \App\User::all()->where('username',$data->reviewer)->first();
-                $authorizer = \App\User::all()->where('username',$data->checker)->first();
-            ?>
+           
             <tr class="item last">
                 <td>
                    Created By 
                 </td>
                 
                 <td>
-                     @if(!is_null($inputer->signature))
-                    {{$inputer->signature}}
-                    @else
-                   {{$data->reviewer}}
-                    @endif
+                   <i>{{$inputer->name}}</i> 
+                   
                   
                 </td>
             </tr>
@@ -252,11 +246,7 @@
                 </td>
                 
                 <td>
-                    @if(!is_null($authorizer->signature))
-                    {{$authorizer->signature}}
-                    @else
-                  {{$data->checker}}
-                    @endif
+                  <i>{{$authorizer->name}}</i> 
                 </td>
             </tr>
             

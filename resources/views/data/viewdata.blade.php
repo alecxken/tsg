@@ -52,24 +52,30 @@
                 <td>{{$user->rate}}</td>
               
                 <td>
-                  @if($user->status == 'Approve')
-                    <label class="label label-success">Done</label>
+                  @if($user->status == 'New')
+                    <label class="label label-success">{{$user->status}}</label>
                   @elseif($user->status == 'Complete')
                      <label class="label label-success">Ok</label>
                   @elseif($user->status == 'Transit')
                      <label class="label label-info">Transit</label>
                   @else
-                     <label class="label label-danger">Pending</label>
+                     <label class="label label-info">{{$user->status}}</label>
                   @endif
                 </td>
 
                 <td>
-                  @if($user->status == 'Approve')
-                   <a href="{{url('data-details/'.$user->ref_token)}}" class="label label-success">Detail</a>
+                  @if($user->status == 'New')
+                  @role('Authorizer')
+                    <button class="btn btn-default  btn-sm  open-modal" value="{{$user->ref_token}}">Authorize Now</button>
+                    @else
+                    Authorizer Queue
+                  @endrole
+
+                 {{--   <a href="{{url('data-details/'.$user->ref_token)}}" class="label label-success">Detail</a> --}}
                   @else
-              <button class="label label-default  label-sm  open-modal" value="{{$user->ref_token}}">Update Status</button>
-                  <a href="{{url('data-view/'.$user->ref_token)}}" class="label label-warning">Action</a>
-                   <a href="{{url('data-edit/'.$user->ref_token)}}" class="label label-info">Edit</a>
+             <a href="{{url('data-details/'.$user->ref_token)}}" class="label label-success">Detail</a>
+                {{--   <a href="{{url('data-view/'.$user->ref_token)}}" class="label label-warning">Action</a>
+                   <a href="{{url('data-edit/'.$user->ref_token)}}" class="label label-info">Edit</a> --}}
                   <!--   <a href="{{url('data-drop/'.$user->ref_token)}}" class="label label-warning">Drop</a> -->
                   @endif
                 </td>

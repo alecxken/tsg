@@ -30,6 +30,13 @@ class DataController extends Controller
            return view('data.index');
             }
 
+   public function monitor()
+    {
+    $data = StatusTracking::OrderBy('id', 'desc')->get();
+    
+      return view('admin.monitor',compact('data'));
+            }
+
 
       /**
      * Show the form for creating a new resource.
@@ -153,7 +160,7 @@ class DataController extends Controller
             		$data->client_ref = $token;
             		$data->delivery_date = $request->input('delivery_date');
             		$data->rate = $request->input('rate');
-                    $data->reviewer = $request->input('reviewer');
+                    $data->reviewer = Auth::user()->username;
             		$data->checker = $request->input('checker');
             		$data->status = 'New';
                      
@@ -229,14 +236,14 @@ class DataController extends Controller
             $data =  DataEntry::findorfail($t->id);
             $data->status = $request->input('status');        
             $data->comments = $request->input('comments');
-            $data->checker = Auth::user()->name;
+            $data->checker = Auth::user()->username;
             $data->delivery_status = 'Pending';
             $data->agent_pdf = $filename;
             $data->save();
             $data = Datacall::all()->where('ref_token',$token)->first();
             $numberToWords = new NumberToWords();
-            $currencyTransformer = $numberToWords->getCurrencyTransformer('en');
-            $words= $currencyTransformer->toWords($data->amount, 'USD'); 
+            $currencyTransformer = $numberToWords->getNumberTransformer('en');
+            $words= $currencyTransformer->toWords($data->amount); 
             $pdf = \PDF::loadView('data.pdfs', compact('data','words'));
             $pdf->save(storage_path('authorizations/').$filename);        
             return redirect('agent-approval/'.$token)->with('status','Succesfully Captured');
@@ -262,7 +269,7 @@ class DataController extends Controller
                         $data =  DataEntry::findorfail($t->id);
                         $data->status = $request->input('status');        
                         $data->comments = $request->input('comments');
-                        $data->checker = Auth::user()->name;
+                        $data->checker = Auth::user()->username;
                         $data->delivery_status = 'Pending';
                         $data->save();
 
@@ -278,7 +285,7 @@ class DataController extends Controller
                 $data =  DataEntry::findorfail($t->id);
                 $data->status = $request->input('status');        
                 $data->comments = $request->input('comments');
-                $data->checker = Auth::user()->name;
+                $data->checker = Auth::user()->username;
                 $data->delivery_status = 'Agent';
                 $data->save();
 
@@ -303,7 +310,7 @@ class DataController extends Controller
         $data =  DataEntry::findorfail($t->id);
         $data->status = $request->input('status');        
         $data->comments = $request->input('comments');
-        $data->checker = Auth::user()->name;
+        $data->checker = Auth::user()->username;
         $data->delivery_status = 'pending';
         $data->save();
           $data = Datacall::all()->where('ref_token',$t->ref_token)->first();
@@ -371,12 +378,34 @@ class DataController extends Controller
    
      
         $t = DataEntry::all()->where('ref_token',$request->input('ref_token'))->first();
+         $tracker = StatusTracking::all()->where('stage','Invoice Stage')->where('ref_token',$tokens)->first();
+
+         if (is_null($tracker)) {
+                    $track = new StatusTracking();
+                    $track->ref_token = $request->input('ref_token');
+                    $track->stage = 'Invoice Stage';
+                    $track->inputer = Auth::user()->username;
+                    $track->inputer_time = \Carbon\Carbon::now();
+                    $track->inputer_status = 'Received';
+                    $track->save();
+         }
+         else
+         {
+                    $track = StatusTracking::findorfail($tracker->id);
+                    $track->inputer = Auth::user()->username;
+                    $track->inputer_time = \Carbon\Carbon::now();
+                    $track->inputer_status = 'Received';
+                    $track->save();  
+         }
+                   
+
+                    
         $data =  DataEntry::findorfail($t->id);
         $data->status = $request->input('status');
         $data->comments = $request->input('comments');
         $data->delivery_status = 'Done';
         $data->invoice_pdf =$filename;
-         $media = $request->file('proof_delivery');
+        $media = $request->file('proof_delivery');
              $files=[];
           if($request->hasfile('proof_delivery'))
           {  
@@ -398,7 +427,7 @@ class DataController extends Controller
         $data->save();
         $deta = Datacall::all()->where('ref_token',$request->input('ref_token'))->first();
         $coms = (($deta->amount)*0.03);
-        $data = Invoice::all()->where('ref_token',$token)->first();
+        $data = Invoice::all()->where('ref_token',$request->input('ref_token'))->first();
 
         if (!is_null($data)) {
         $inv =  Invoice::findorfail($data->id);
@@ -441,12 +470,14 @@ class DataController extends Controller
         $data = Invoice::all()->where('ref_token',$deta->ref_token)->first();
         $numberToWords = new NumberToWords();
         // return $data;
-        $currencyTransformer = $numberToWords->getCurrencyTransformer('en');
-        $words= $currencyTransformer->toWords(($coms + $deta->amount), 'USD'); 
-      //  return $words;
-        $pdf = \PDF::loadView('data.invoice2', compact('data','words'));
+        $currencyTransformer = $numberToWords->getNumberTransformer('en');
+        $words= $currencyTransformer->toWords(($coms + $deta->amount)); 
+      $inputer = \App\User::all()->where('username',$deta->reviewer)->first();
+                $authorizer = \App\User::all()->where('username',$deta->checker)->first();
+  
+        $pdf = \PDF::loadView('data.invoice2', compact('data','words','deta','inputer','authorizer'));
         $pdf->save(storage_path('authorizations/').$filename);
-        
+
         return redirect('invoice-preview/'.$deta->ref_token)->with('status','Succesfully Captured');
         $emailJob = (new NewInvoiceJob($data))->delay(\Carbon\Carbon::now()->addSeconds(2));        
             $this->dispatch($emailJob);  
@@ -457,6 +488,17 @@ class DataController extends Controller
         public function invoicesend(Request $request)
      {
         $tokens = $request->input('ref_token');
+             $tracker = StatusTracking::all()->where('stage','Invoice Stage')->where('ref_token',$tokens)->first();
+
+         if (!is_null($tracker)) {
+                   
+                        $tracker = StatusTracking::findorfail($tracker->id);
+                        $tracker->authorizer = Auth::user()->username;
+                        $tracker->authorizer_time = \Carbon\Carbon::now();
+                        $tracker->authorizer_status = 'Invoice Sent';
+                        $tracker->save();
+
+         }
      
         $t = DataEntry::all()->where('ref_token',$request->input('ref_token'))->first();  
         $data =  DataEntry::findorfail($t->id);
@@ -517,6 +559,28 @@ class DataController extends Controller
          $datas->pay_date = \Carbon\Carbon::now();
          $datas->pay_inputter = Auth::user()->email;
         $datas->status = 'Paid';
+          $datas->save();  
+
+      
+
+        return redirect('view-agent')->with('status','Succesfully Captured');
+        }
+
+             public function invoicepaidiy(Request $request)
+     {
+        $tokens = $request->input('ref_token');
+         $t = DataEntry::all()->where('ref_token',$request->input('ref_token'))->first();  
+        $invoice = Invoice::all()->where('ref_token',$request->input('ref_token'))->first();  
+        $data =  DataEntry::findorfail($t->id);
+        $data->status = $request->input('status');
+        $data->comments = $request->input('desc');
+        $data->save();  
+
+        $datas =  Invoice::findorfail($invoice->id);
+        $datas->status = $request->input('status');
+         $datas->pay_date = \Carbon\Carbon::now();
+         $datas->pay_inputter = Auth::user()->email;
+        $datas->status = 'Repaid';
           $datas->save();  
 
       

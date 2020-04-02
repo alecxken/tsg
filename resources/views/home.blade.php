@@ -6,8 +6,8 @@ $reports = \App\EssReport::all()->count();
 $new = \App\DataEntry::all()->where('status','New')->count();
 $agent = \App\DataEntry::all()->where('status','Agent')->count();
 $invoice = \App\DataEntry::all()->where('status','invoicing')->count();
-$news = \App\User::all()->count();
 
+$news = \App\User::all()->count();
 
  $post = \App\Trans::all()->pluck('state');
               $num = \App\Trans::all()->pluck('items');
@@ -19,6 +19,15 @@ $news = \App\User::all()->count();
  <style>
     a { color: #042b1e; } /* CSS link color */
   </style>
+
+@if(\Auth::user()->name == Auth::user()->username)
+<div id="errods" class="alert alert-danger alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h4>Profile Update Alert!</h4>
+
+              <p> Please Update your Profile to continue <a href="{{url('/profile')}}" class="btn btn-info btn-sm">Profile Update</a></p>
+            </div>
+@endif
 <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Dashboard Summary</h3>
@@ -48,11 +57,11 @@ $news = \App\User::all()->count();
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-green"><i >@if(!empty($news)) {{$news}} @else  0 @endif</i></span>
+            <span class="info-box-icon bg-green"><i >@if(!empty($agent)) {{$agent}} @else  0 @endif</i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Pending  </span>
-              <span class="info-box-number"><small>Agent Deliveries</small></span>
+              <span class="info-box-number"><small>Agent Confirmation</small></span>
 
             </div>
             <!-- /.info-box-content -->
@@ -66,7 +75,7 @@ $news = \App\User::all()->count();
 
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-red"><i>@if(!empty($news)) {{$news}} @else  0 @endif</i></span>
+            <span class="info-box-icon bg-red"><i>@if(!empty($invoice)) {{$invoice}} @else  0 @endif</i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Invoices</span>

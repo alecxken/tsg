@@ -64,7 +64,8 @@ $test = $now->diffInDays($end);
                 </td>
                <td>
                   @if($user->status == 'Paids')
-                   <a href="{{url('action-remedy/'.$user->ref_token)}}" class="label label-success">Pay Agent</a>
+                   <button class="btn btn-default  btn-sm  open-modal" value="{{$user->ref_token}}">Agent Paid</button>
+                   {{-- <a href="{{url('action-remedy/'.$user->ref_token)}}" class="label label-success">Pay Agent</a> --}}
                   @elseif($user->status == 'Repaid')
 Closed
                   @else
@@ -87,13 +88,13 @@ Closed
    </div>
 </div>
     </div>
-    @include('payments.payinputer')
+    @include('payments.pays')
 
     <script type="text/javascript">
     //display modal form for task editing
      $(document).ready(function(){
 
-    var url = "payment-action";
+    var url = "payment-actions";
 
     $('.open-modal').click(function(){
         var task_id = $(this).val();

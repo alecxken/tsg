@@ -41,8 +41,8 @@ class NewInvoiceJob implements ShouldQueue
 
     $deta = DataEntry::all()->where('ref_token',$this->data->ref_token)->first();
 
-    $checker =User::where('name',$deta->checker)->first();
-    $reviewer =User::where('name',$deta->reviewer)->first();  
+    $checker =User::where('username',$deta->checker)->first();
+    $reviewer =User::where('username',$deta->reviewer)->first();  
     $agent =Client::where('token',$deta->client_name)->first();  
     $cc =['akendagor@ecobank.com',$checker->email,$reviewer->email,]; 
     $data = Invoice::all()->where('ref_token',$this->data->ref_token)->first();

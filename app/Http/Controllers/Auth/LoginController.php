@@ -29,11 +29,17 @@ class LoginController extends Controller
 
      public function login(Request $request)
     {
-     $user = $request->input('email');
+      
+        $email = $request->input('username');
+if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+ return back()->with('danger','Invalid Username');
+}
+     $user = $request->input('username');
      $password = $request->input('password');
 
 
-    $user = User::where('name', $user)->first();
+    $user = User::where('username', $user)->first();
+
                  if(!empty($user))
                     {
                       Auth::loginUsingId($user->id);
@@ -42,9 +48,9 @@ class LoginController extends Controller
             else
                 {
                   $users = new User();
-                  $users->username = $request->input('email');
-                    $users->name = $request->input('email');
-                  $users->email = $request->input('email').'@ecobank.com';
+                  $users->username = $request->input('username');
+                    $users->name = $request->input('username');
+                  $users->email = $request->input('username').'@ecobank.com';
                     $users->password = Hash::make(12345678);
                   $users->save();
                    Auth::loginUsingId($users->id);
@@ -59,7 +65,7 @@ class LoginController extends Controller
       
       if($bind = @ldap_bind($ldap, $user.'@ecobank.group', $password))
            {
-            $user = User::where('name', $user)->first();
+            $user = User::where('username', $user)->first();
                  if(!empty($user))
                     {
                       Auth::loginUsingId($user->id);
@@ -69,9 +75,9 @@ class LoginController extends Controller
                 {
 
                   $users = new User();
-                $users->username = $request->input('email');
-                    $users->name = $request->input('email');
-                  $users->email = $request->input('email').'@ecobank.com';
+                $users->username = $request->input('username');
+                    $users->name = $request->input('username');
+                  $users->email = $request->input('username').'@ecobank.com';
                     $users->password = Hash::make(12345678);
                  $users->save();
                    Auth::loginUsingId($users->id);

@@ -225,8 +225,43 @@ public function system()
    {
      $t = Token::UniqueNumber('ess_reports', 'token', 4 );
       $token = 'ESS-'.$t.'-'.date('Y').'';
+       
          return view('ess.view',compact('token'));
    }
+
+   public function displayImage($filename)
+
+{
+
+  
+
+    $path = storage_public('signatures/' . $filename);
+
+   
+
+    if (!File::exists($path)) {
+
+        abort(404);
+
+    }
+
+  
+
+    $file = File::get($path);
+
+    $type = File::mimeType($path);
+
+  
+
+    $response = Response::make($file, 200);
+
+    $response->header("Content-Type", $type);
+
+ 
+
+    return $response;
+
+}
 
       public function profile()
     {      
@@ -251,18 +286,14 @@ public function system()
           {            
              
                 if (!empty($media)) {
-                    $destinationPath = storage_path('signatures');
+                    $destinationPath = public_path('sigs');
                     $fname = date('Y').'-'.$request->input('username').'.'.$media->getClientOriginalExtension();
                     $media->move($destinationPath, $fname);                
-               
+                    $user->signature = $fname;
                   }
                 
              }
-         if(!is_null($fname))
-                {
-                    $user->signature = $fname;
-                }
-
+      
               
           $user->save();
           return redirect('profile')->with('status','successfully Updated');
